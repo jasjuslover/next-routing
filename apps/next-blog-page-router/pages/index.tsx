@@ -13,12 +13,12 @@ export default function Home({ blogs }: Props) {
 
       <div className="mt-5 flex flex-col gap-y-4 w-5xl w-full">
         {blogs?.map((blog) => (
-          <a href={`/${blog.id}`} key={blog.id}>
+          <Link href={`/${blog.id}`} key={blog.id}>
             <div className="space-y-2 w-full bg-white p-5 shadow rounded">
               <h4 className="text-lg font-semibold">{blog.title}</h4>
               <p>{new Date(blog.createdAt || "").toISOString()}</p>
             </div>
-          </a>
+          </Link>
         ))}
       </div>
     </main>
