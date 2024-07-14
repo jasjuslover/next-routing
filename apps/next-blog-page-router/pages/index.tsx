@@ -1,7 +1,5 @@
-import Image from "next/image";
-import { Inter } from "next/font/google";
-import { api } from "@/utils/network/axios";
 import { Blog } from "@/model/blog";
+import { api } from "@/utils/network/axios";
 
 type Props = {
   blogs: Blog[];
@@ -14,7 +12,7 @@ export default function Home({ blogs }: Props) {
 
       <div className="mt-5 flex flex-col gap-y-4 w-5xl w-full">
         {blogs?.map((blog) => (
-          <a href={`/${blog.id}`}>
+          <a href={`/${blog.id}`} rel="preload">
             <div className="space-y-2 w-full bg-white p-5 shadow rounded">
               <h4 className="text-lg font-semibold">{blog.title}</h4>
               <p>{new Date(blog.createdAt || "").toISOString()}</p>
