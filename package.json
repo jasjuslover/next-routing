@@ -3,7 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "dev:fe:page": "pnpm --filter next-blog-page-router dev",
+    "build:fe:page": "pnpm --filter next-blog-page-router build",
+    "start:fe:page": "pnpm --filter next-blog-page-router start",
+    "dev:be": "pnpm --filter backend dev"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC"

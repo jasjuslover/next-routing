@@ -1,6 +1,11 @@
 import { Blog } from "@/model/blog";
 import { api } from "@/utils/network/axios";
-import { GetServerSidePropsContext } from "next";
+import {
+  GetServerSidePropsContext,
+  GetStaticPaths,
+  GetStaticPathsContext,
+  GetStaticPropsContext,
+} from "next";
 
 type Props = {
   data: Blog | undefined;
@@ -21,20 +26,43 @@ function BlogDetail({ data }: Props) {
 
 export default BlogDetail;
 
+export const getStaticPaths: GetStaticPaths = async () => {
+  const res = await api.get<Blog[]>("/api/blogs");
+
+  const paths = res.data.map((blog) => ({
+    params: { id: blog.id?.toString() },
+  }));
+
+  return {
+    paths,
+    fallback: true, // Jika fallback: true, halaman yang tidak di-pre-render akan dibuat pada permintaan pertama
+  };
+};
+
 type ContextParam = {
   id: string;
 };
 
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext<ContextParam>
+export const getStaticProps = async (
+  context: GetStaticPropsContext<ContextParam>
 ) => {
-  const id = context.params?.id;
+  const { id } = context.params!;
+  try {
+    const res = await api.get(`/api/blogs/${id}`);
+    const blog = res.data;
 
-  const response = await api.get(`/api/blogs/${id}`);
+    if (!blog) {
+      return {
+        notFound: true,
+      };
+    }
 
-  return {
-    props: {
-      data: response.data,
-    },
-  };
+    return {
+      props: { data: blog },
+    };
+  } catch (error) {
+    return {
+      notFound: true,
+    };
+  }
 };
