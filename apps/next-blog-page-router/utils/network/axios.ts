@@ -4,4 +4,8 @@ const api = axios.create({
   baseURL: "http://localhost:3001",
 });
 
-export { api };
+const authApi = axios.create({
+  baseURL: "http://localhost:3000",
+});
+
+export { api, authApi };

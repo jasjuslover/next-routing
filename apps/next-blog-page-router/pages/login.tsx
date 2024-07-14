@@ -1,3 +1,4 @@
+import { authApi } from "@/utils/network/axios";
 import React, { useState } from "react";
 
 const Login: React.FC = () => {
@@ -6,15 +7,9 @@ const Login: React.FC = () => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const response = await fetch("/api/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, password }),
-    });
+    const response = await authApi.post("/api/login", { username, password });
 
-    if (response.ok) {
+    if (response.status === 200) {
       window.location.href = "/dashboard";
     } else {
       alert("Login failed");
