@@ -1,7 +1,18 @@
 const db = require("../models");
+const delay = require("../utils/utils");
 const Blog = db.Blog;
 
 const getBlogs = async (req, res) => {
+  try {
+    const blogs = await Blog.findAll();
+    res.json(blogs);
+  } catch (error) {
+    res.status(500).json({ error: "Unable to fetch blogs" });
+  }
+};
+
+const getSlowBlogs = async (req, res) => {
+  await delay(3000);
   try {
     const blogs = await Blog.findAll();
     res.json(blogs);
@@ -23,4 +34,4 @@ const getBlogById = async (req, res) => {
   }
 };
 
-module.exports = { getBlogs, getBlogById };
+module.exports = { getBlogs, getBlogById, getSlowBlogs };
